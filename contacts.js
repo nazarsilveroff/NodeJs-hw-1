@@ -16,40 +16,56 @@ function getRandomInt() {
 // TODO: чтение файла
 async function listContacts() {
   try {
-    const data = await fs.readFile(contactsPath);
-    const result = JSON.parse(data);
-    console.table(result);
-  } catch (error) {
-    console.log(error);
+    const response = await fs.readFile(contactsPath, (err) => {
+      if (err) return console.log(err.message);
+    });
+    let contacts = JSON.parse(response);
+    return console.table(contacts);
+  } catch (err) {
+    console.error(err.message);
   }
 }
 // TODO: поиск по id
 async function getContactById(contactId) {
 try {
-    const data = await fs.readFile(contactsPath);
-    const result = JSON.parse(data);
-    const contact = result.find(({id}) => id ===contactId)
-    console.table(contact);
-} catch (error) {
-    console.log(error);
+    const response = await fs.readFile(contactsPath, (err) => {
+      if (err) return console.log(err.message);
+    });
+    let contacts = JSON.parse(response);
+    const contact = contacts.find(({id}) => id ===contactId)
+    return console.table(contact);
+  } catch (err) {
+    console.error(err.message);
+  }
 }
-}
-
+// TODO: удаление по id
 async function removeContact(contactId) {
-    const data = await fs.readFile(contactsPath);
-    const result = JSON.parse(data);
-    const deleteContact = result.filter(({ id }) => id !== contactId)
-    console.table(deleteContact);
+try {
+    const response = await fs.readFile(contactsPath, (err) => {
+      if (err) return console.log(err.message);
+    });
+    let contacts = JSON.parse(response);
+    const deleteContact = contacts.filter(({ id }) => id !== contactId)
+    return console.table(deleteContact);
+  } catch (err) {
+    console.error(err.message);
+  }
 }
-
+// TODO: добавление в файл
 async function addContact(name, email, phone) {
-    const data = await fs.readFile(contactsPath);
-    const result = JSON.parse(data);
-        result.push({
+try {
+    const response = await fs.readFile(contactsPath, (err) => {
+      if (err) return console.log(err.message);
+    });
+    let contacts = JSON.parse(response);
+            contacts.push({
             id: getRandomInt(),
             name: name,
             email: email,
             phone: phone,
     });
-    console.table(result);
+    return console.table(contacts);
+  } catch (err) {
+    console.error(err.message);
+  }
 }
